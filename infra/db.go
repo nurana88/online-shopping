@@ -10,7 +10,7 @@ import (
 var DB *sql.DB
 
 func init() {
-	dataSourceName := "root:J>uyQ4aL@tcp(127.0.0.1:3306)/testdb"
+	dataSourceName := "root:pwd@tcp(127.0.0.1:3306)/testdb"
 
 	var err error
 	DB, err = sql.Open("mysql", dataSourceName)

@@ -17,6 +17,11 @@ func Login(res http.ResponseWriter, req *http.Request) {
 
 }
 
+// Update user
+func UpdateUser(res http.ResponseWriter, req *http.Request) {
+
+}
+
 // Check validity of user
 func IsUserValid() {
 
