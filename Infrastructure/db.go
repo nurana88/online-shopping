@@ -1,4 +1,4 @@
-package infra
+package Infrastructure
 
 import (
 	"database/sql"
@@ -10,17 +10,20 @@ import (
 var DB *sql.DB
 
 func init() {
-	dataSourceName := "root:pwd@tcp(127.0.0.1:3306)/testdb"
+	dataSourceName := "root:J>uyQ4aL@tcp(127.0.0.1:3306)/testdb"
 
 	var err error
 	DB, err = sql.Open("mysql", dataSourceName)
 	if err != nil {
-		fmt.Println("Can not connect", err)
+		fmt.Println("Couldn't connect to DB", err)
 		return
 	}
 
-	defer DB.Close()
-
+	err = DB.Ping()
+	if err != nil {
+		fmt.Println("Can not be connected in Ping", err)
+		return
+	}
 	fmt.Println("Successfully connected to DB...")
 
 }

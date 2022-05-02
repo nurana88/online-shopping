@@ -3,19 +3,23 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/nurana88/shop-template/pkg/render"
+	"github.com/nurana88/online-shopping/pkg/render"
 )
 
 func Home(res http.ResponseWriter, req *http.Request) {
 	render.RenderTemplate(res, "index.html")
-	res.WriteHeader(http.StatusOK)
 }
 
+func Register(res http.ResponseWriter, req *http.Request) {
+	render.RenderTemplate(res, "register.html")
+}
+
+func Login(res http.ResponseWriter, req *http.Request) {
+	render.RenderTemplate(res, "login.html")
+}
 func Shop(res http.ResponseWriter, req *http.Request) {
 	render.RenderTemplate(res, "shop.html")
-	res.WriteHeader(http.StatusOK)
 }
-
-func renderFile(res http.ResponseWriter, html string) {
-
+func Welcome(res http.ResponseWriter, req *http.Request) {
+	render.RenderTemplate(res, "welcome.html")
 }
