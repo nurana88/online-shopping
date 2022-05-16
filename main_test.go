@@ -3,12 +3,12 @@ package main
 import (
 	"testing"
 
-	"github.com/nurana88/online-shopping/Domain/Usercases"
+	domain "github.com/nurana88/online-shopping/Domain"
 )
 
 func TestUserValidation(t *testing.T) {
 
-	testUser := Usercases.User{
+	testUser := domain.User{
 		Name:     "Jeyn",
 		Lastname: "McGregory",
 		Password: "tErw123>",

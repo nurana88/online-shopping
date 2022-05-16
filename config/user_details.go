@@ -1,6 +1,8 @@
-package Usercases
+package config
 
 import (
+	"errors"
+	"time"
 	"unicode"
 )
 
@@ -19,21 +21,27 @@ type LoginDetails struct {
 	Password string `json:"password"`
 }
 
-func (user *User) Validate() *ApiErr {
+/*
+- Name and lastname should contain only letters
+- Passwords should contain uppercase, lowercase letter, number and special character
+- Password should be greater than 6 characters
+*/
+
+func (user *User) Validate() error {
 
 	pwdSpace, pwdHasLower, pwdHasUpper, pwdHasNum, pwdHasChar, pwdLength := false, false, false, false, false, false
 
 	// Check if name is only letters
 	for _, char := range user.Name {
 		if unicode.IsLetter(char) == false {
-			return NewBadRequest("Incorrect Name")
+			return errors.New("Incorrect Name")
 		}
 	}
 
 	// Check if lastname is only letters
 	for _, char := range user.Lastname {
 		if unicode.IsLetter(char) == false {
-			return NewBadRequest("Incorrect Lastname")
+			return errors.New("Incorrect Lastname")
 		}
 	}
 
@@ -58,15 +66,21 @@ func (user *User) Validate() *ApiErr {
 	}
 
 	if pwdSpace || !pwdHasLower || !pwdHasUpper || !pwdHasNum || !pwdHasChar || !pwdLength {
-		return NewBadRequest("Incorrect Password")
+		return errors.New("Incorrect Password")
 	}
 
 	// Check if passwords are matching
 	if user.Password != user.PasswordRepeat {
-		return NewBadRequest("Passwords are not matching")
+		return errors.New("Passwords are not matching")
 	}
 
 	// Check Email
 
 	return nil
+}
+
+const apiTimeLayout = "006-01-02T15:04:05Z"
+
+func GetDate() string {
+	return time.Now().Format(apiTimeLayout)
 }
