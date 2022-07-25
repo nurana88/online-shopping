@@ -21,6 +21,14 @@ type LoginDetails struct {
 	Password string `json:"password"`
 }
 
+func NewUser(id int, name, lastname, email, password, passwordRepeat, dateCreated string) *User {
+	return &User{id, name, lastname, email, password, passwordRepeat, dateCreated}
+}
+
+func NewLoginDetails(email, password string) *LoginDetails {
+	return &LoginDetails{email, password}
+}
+
 /*
 - Name and lastname should contain only letters
 - Passwords should contain uppercase, lowercase letter, number and special character
