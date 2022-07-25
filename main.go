@@ -32,16 +32,16 @@ func main() {
 
 	http.HandleFunc("/", handlers.Home)
 	http.HandleFunc("/register", handlers.Register)
-	http.HandleFunc("/registerauth", Handlers.NewRegisterUserHandler(domain.NewDbUserUsercase(Infrastructure.NewDbActions(DB))))
+	http.HandleFunc("/registerauth", Handlers.NewRegisterUserHandler(domain.NewCreateUserUsecase(Infrastructure.NewUserRepository(DB))))
 	http.HandleFunc("/login", handlers.Login)
-	http.HandleFunc("/loginauth", Handlers.LoginUser(domain.NewDbUserUsercase(Infrastructure.NewDbActions(DB))))
+	http.HandleFunc("/loginauth", Handlers.NewLoginUserHandler(domain.NewGetUserUsecase(Infrastructure.NewUserRepository(DB))))
 
 	http.HandleFunc("/welcome", handlers.Welcome)
 
 	// http.Handle("/assets", http.StripPrefix("/assets", http.FileServer(http.Dir("assets/"))))
 
-	fmt.Println("Starting session on :9000...")
-	log.Fatal(http.ListenAndServe(":9000", nil))
+	fmt.Println("Starting session on :8000...")
+	log.Fatal(http.ListenAndServe(":8000", nil))
 
 	// log.Fatal(http.ListenAndServe(":9000", http.FileServer(http.Dir("../templates"))))
 }

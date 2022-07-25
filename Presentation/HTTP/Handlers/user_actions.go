@@ -11,7 +11,7 @@ import (
 
 // Register user
 
-func NewRegisterUserHandler(userCreator *usercases.DBUserUsercase) func(http.ResponseWriter, *http.Request) {
+func NewRegisterUserHandler(userCreator *usercases.CreateUserUsecase) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
 		var user config.User
 		//res.Header().Set("Content-Type", "json/application")
@@ -56,7 +56,7 @@ func NewRegisterUserHandler(userCreator *usercases.DBUserUsercase) func(http.Res
 
 }
 
-func LoginUser(userCreator *usercases.DBUserUsercase) func(http.ResponseWriter, *http.Request) {
+func NewLoginUserHandler(userGetter *usercases.GetUserUsecase) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
 		var request config.LoginDetails
 		//res.Header().Set("Content-Type", "json/application")
@@ -68,7 +68,7 @@ func LoginUser(userCreator *usercases.DBUserUsercase) func(http.ResponseWriter, 
 		request.Email = req.FormValue("email")
 		request.Password = req.FormValue("pwd")
 
-		result, saveErr := userCreator.GetUser(request)
+		result, saveErr := userGetter.GetUser(request)
 		if saveErr != nil {
 			log.Println(saveErr)
 			res.Write([]byte("Bad request 400"))

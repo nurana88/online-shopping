@@ -3,12 +3,12 @@ package main
 import (
 	"testing"
 
-	domain "github.com/nurana88/online-shopping/Domain"
+	config "github.com/nurana88/online-shopping/config"
 )
 
 func TestUserValidation(t *testing.T) {
 
-	testUser := domain.User{
+	testUser := config.User{
 		Name:     "Jeyn",
 		Lastname: "McGregory",
 		Password: "tErw123>",
@@ -17,3 +17,4 @@ func TestUserValidation(t *testing.T) {
 		t.Error("Test failed:", testUser)
 	}
 }
+
