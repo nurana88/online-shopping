@@ -1,4 +1,4 @@
-package handlers
+package homehandlers
 
 import (
 	"fmt"
@@ -27,9 +27,15 @@ func Register(res http.ResponseWriter, req *http.Request) {
 	render.RenderTemplate(res, "register.html")
 }
 
+//type userLogin struct {
+//}
+//
+//func NewUserLogin()
+
 func Login(res http.ResponseWriter, req *http.Request) {
 	render.RenderTemplate(res, "login.html")
 }
+
 func Shop(res http.ResponseWriter, req *http.Request) {
 	render.RenderTemplate(res, "shop.html")
 }

@@ -3,35 +3,33 @@ package domain
 import (
 	"errors"
 	"fmt"
-
 	config "github.com/nurana88/online-shopping/config"
 )
 
-// ------* Register user *------- //
-type UserInsert interface {
-	InsertUser(user config.User) error
-}
-type CreateUserUsecase struct {
-	userRepo UserInsert
+type createUser struct {
+	dbActions DBActions
 }
 
 // Constructor
-func NewCreateUserUsecase(userRepo UserInsert) *CreateUserUsecase {
-	return &CreateUserUsecase{userRepo: userRepo}
+func NewUserCreate(dbActions DBActions) *createUser {
+	return &createUser{dbActions: dbActions}
 }
 
-func (c *CreateUserUsecase) CreateUser(user config.User) (*config.User, error) {
+// ------* Create user in DB *------- //
+func (c *createUser) CreateUser(user config.User) error {
 
+	fmt.Println("user is in creat func...", user)
 	if err := user.Validate(); err != nil {
 		fmt.Println("Error in createUser", err)
-		return nil, errors.New("error in creating new user")
+		return errors.New("error in creating new user")
 	}
-	if err := c.userRepo.InsertUser(user); err != nil {
+	fmt.Println("User validated in Create func")
+	if err := c.dbActions.InsertUser(user); err != nil {
 		fmt.Println("error in Inserting user", err)
-		return nil, errors.New("error in inserting user")
+		return errors.New("error in inserting user")
 	}
 
 	fmt.Println("Created user after inserting...", user)
 
-	return &user, nil
+	return nil
 }

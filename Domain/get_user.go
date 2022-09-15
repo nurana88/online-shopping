@@ -5,19 +5,16 @@ import (
 	config "github.com/nurana88/online-shopping/config"
 )
 
-type UserFind interface {
-	FindUserInDB(user config.User) error
+type getUser struct {
+	dbActions DBActions
 }
 
-type GetUserUsecase struct {
-	userRepo UserFind
+// Constructor
+func NewGetUser(dbActions DBActions) *getUser {
+	return &getUser{dbActions: dbActions}
 }
 
-func NewGetUserUsecase(userRepo UserFind) *GetUserUsecase {
-	return &GetUserUsecase{userRepo: userRepo}
-}
-
-func (g *GetUserUsecase) GetUser(request config.LoginDetails) (*config.User, error) {
+func (g *getUser) GetUser(request config.LoginDetails) (*config.User, error) {
 
 	reqPassword := config.GetMd5(request.Password)
 
@@ -26,7 +23,7 @@ func (g *GetUserUsecase) GetUser(request config.LoginDetails) (*config.User, err
 		Password: reqPassword,
 	}
 
-	if err := g.userRepo.FindUserInDB(userRequest); err != nil {
+	if err := g.dbActions.FindUserInDB(userRequest); err != nil {
 		return nil, err
 	}
 
