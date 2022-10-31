@@ -1,4 +1,4 @@
-package Infrastructure
+package storage
 
 import (
 	"database/sql"
@@ -17,15 +17,15 @@ const (
 	queryUpdateUser = "UPDATE users_shopping SET name=?, lastname=?, email=? WHERE id=?;"
 )
 
-type UserRepository struct {
+type UserDBActions struct {
 	db *sql.DB
 }
 
-func NewUserRepository(newDB *sql.DB) *UserRepository {
-	return &UserRepository{db: newDB}
+func NewUserDBActions(newDB *sql.DB) *UserDBActions {
+	return &UserDBActions{db: newDB}
 }
 
-func (a *UserRepository) InsertUser(user config.User) error {
+func (a *UserDBActions) InsertUser(user config.User) error {
 	// Check if user already exists
 	err := a.db.QueryRow(queryFindEmail, user.Email).Scan(&user.Id, &user.Name, &user.Lastname, &user.Email, &user.DateCreated)
 
@@ -61,7 +61,7 @@ func (a *UserRepository) InsertUser(user config.User) error {
 	return nil
 }
 
-func (a *UserRepository) FindUserInDB(user config.User) error {
+func (a *UserDBActions) FindUserInDB(user config.User) error {
 	fmt.Println("Checking LoginUser...", user)
 
 	err := a.db.QueryRow(queryFindUserByEmailAndPassword, user.Email, user.Password).Scan(&user.Id, &user.Name, &user.Lastname, &user.Email, &user.DateCreated)

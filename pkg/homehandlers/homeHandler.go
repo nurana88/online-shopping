@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/nurana88/online-shopping/pkg/monitoring/metrics"
 	"github.com/nurana88/online-shopping/pkg/render"
 )
 
@@ -24,6 +25,7 @@ func Home(res http.ResponseWriter, req *http.Request) {
 }
 
 func Register(res http.ResponseWriter, req *http.Request) {
+	metrics.RegisterRequestCounter.Inc()
 	render.RenderTemplate(res, "register.html")
 }
 

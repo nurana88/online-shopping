@@ -3,8 +3,11 @@ package command
 import (
 	"fmt"
 	"github.com/nurana88/online-shopping/domain"
+	"github.com/nurana88/online-shopping/pkg/monitoring/metrics"
 	"github.com/nurana88/online-shopping/pkg/storage"
 	"github.com/nurana88/online-shopping/presentation/http/handlers"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -30,6 +33,7 @@ func (h *HTTPCommand) Run(cliCtx *cli.Context) error {
 	fmt.Println("In The RUN func")
 	//defer cancelCtx()
 
+	prometheus.MustRegister(metrics.RegisterRequestCounter)
 	db, err := h.newDBConnection()
 	if err != nil {
 		log.Fatal("Can't connect to DB", err)
@@ -59,6 +63,7 @@ func (h *HTTPCommand) Run(cliCtx *cli.Context) error {
 		fmt.Println("End of the router")
 	})
 
+	router.Handle("/metrics", promhttp.Handler())
 	fmt.Println("Starting session on :8010...")
 	log.Fatal(http.ListenAndServe(":8010", router))
 
