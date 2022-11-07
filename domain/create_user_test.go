@@ -6,24 +6,19 @@ import (
 	config "github.com/nurana88/online-shopping/config"
 )
 
-type UserInserter struct {
-}
-
-func (u UserInserter) InsertUser(user config.User) error {
-	return nil
-}
-
 func TestNewCreateUser(t *testing.T) {
+	var dbActions DBActions
 
 	testUser := config.User{
-		Name:     "Jeyn",
-		Lastname: "McGregory",
-		Password: "tErw123>",
+		Name:           "Jeyn",
+		Lastname:       "McGregory",
+		Password:       "tErw123>",
+		PasswordRepeat: "tErw123>",
 	}
 
-	user, err := NewCreateUserUsecase(UserInserter{}).CreateUser(testUser)
+	err := NewUserCreate(dbActions).CreateUser(testUser)
 
 	if err != nil {
-		t.Fatalf("Failed to create user %v, an error occurred: %s", user, err.Error())
+		t.Fatalf("Failed to create user %v, an error occurred: %s", testUser, err.Error())
 	}
 }

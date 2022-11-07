@@ -9,7 +9,6 @@ import (
 	"os"
 )
 
-// Build version. Sent as a linker flag in Makefile
 var version string
 
 func main() {

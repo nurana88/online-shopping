@@ -1,8 +1,10 @@
 package command
 
 import (
+	"context"
 	"fmt"
 	"github.com/nurana88/online-shopping/domain"
+	"github.com/nurana88/online-shopping/logger"
 	"github.com/nurana88/online-shopping/pkg/monitoring/metrics"
 	"github.com/nurana88/online-shopping/pkg/storage"
 	"github.com/nurana88/online-shopping/presentation/http/handlers"
@@ -28,7 +30,7 @@ func NewHTTPCommand(basecommand BaseCommand) *HTTPCommand {
 }
 
 func (h *HTTPCommand) Run(cliCtx *cli.Context) error {
-	//ctx := context.Background()
+	ctx, cancelCtx := context.WithCancel(context.TODO())
 
 	fmt.Println("In The RUN func")
 	//defer cancelCtx()
@@ -36,13 +38,16 @@ func (h *HTTPCommand) Run(cliCtx *cli.Context) error {
 	prometheus.MustRegister(metrics.RegisterRequestCounter)
 	db, err := h.newDBConnection()
 	if err != nil {
+		cancelCtx()
 		log.Fatal("Can't connect to DB", err)
 	}
 
+	logger.FromContext(ctx).Info("Connected to db successfully...")
 	fmt.Println("db:", db)
 	//newRegisterUser := storage.NewUserDBInserter(db)
 
 	router := chi.NewRouter()
+	router.Handle("/static", http.StripPrefix("/static", http.FileServer(http.Dir("templates"))))
 
 	router.Group(func(r chi.Router) {
 
@@ -52,8 +57,7 @@ func (h *HTTPCommand) Run(cliCtx *cli.Context) error {
 		userCreateAction := domain.NewUserCreate(userDBActions)
 		r.Method(http.MethodPost, "/registerauth", handlers.NewRegisterUserHandler(userCreateAction))
 		r.Get("/welcome", homehandlers.Welcome)
-
-		r.Get("/", homehandlers.Home)
+		//r.Get("/", homehandlers.Home)
 		r.Get("/register", homehandlers.Register)
 		r.Get("/login", homehandlers.Login)
 		userGetAction := domain.NewGetUser(userDBActions)
@@ -65,7 +69,11 @@ func (h *HTTPCommand) Run(cliCtx *cli.Context) error {
 
 	router.Handle("/metrics", promhttp.Handler())
 	fmt.Println("Starting session on :8010...")
-	log.Fatal(http.ListenAndServe(":8010", router))
+	err = http.ListenAndServe(":8010", router)
+	if err != nil {
+		cancelCtx()
+		log.Fatal("Can't listen and serve in 8010")
+	}
 
 	// log.Fatal(http.ListenAndServe(":9000", http.FileServer(http.Dir("../templates"))))
 	return nil

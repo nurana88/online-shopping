@@ -20,7 +20,7 @@ func NewBaseCommand(ctx context.Context) BaseCommand {
 }
 
 func (cmd *BaseCommand) newDBConnection() (*sql.DB, error) {
-	dataSourceName := "root:J>uyQ4aL@tcp(127.0.0.1:3306)/testdb"
+	dataSourceName := "root:pwd@tcp(127.0.0.1:3306)/testdb"
 
 	var err error
 	db, err = sql.Open("mysql", dataSourceName)
