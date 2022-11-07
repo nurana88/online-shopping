@@ -12,8 +12,8 @@ func TestNewCreateUser(t *testing.T) {
 	testUser := config.User{
 		Name:           "Jeyn",
 		Lastname:       "McGregory",
-		Password:       "tErw123>",
-		PasswordRepeat: "tErw123>",
+		Password:       "tErw123<>",
+		PasswordRepeat: "tErw123<>",
 	}
 
 	err := NewUserCreate(dbActions).CreateUser(testUser)
