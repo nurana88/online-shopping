@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/nurana88/online-shopping/pkg/command"
+	"github.com/nurana88/online-shopping/pkg/domain"
 	"github.com/urfave/cli"
 	"log"
 	"os"
@@ -11,7 +12,18 @@ import (
 
 var version string
 
+type region struct {
+	country domain.Country `valid:"domain-country"`
+}
+
 func main() {
+	addCustomValidators()
+
+	var c domain.Country
+	c = "AT"
+	reg := region{country: c}
+
+	fmt.Println("Country is: ", reg)
 
 	fmt.Println("In the main")
 	version = "1"

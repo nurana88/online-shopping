@@ -1,0 +1,24 @@
+---
+name: "PR: Test"
+
+on: [pull_request]
+
+jobs:
+  test:
+    name: Test
+    runs-on: [ self-hosted, default ]
+    timeout-minutes: 15
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          # SonarQube requires commits history for the analysis
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.16
+
+      - name: Run Unit tests
+        run: make test-unit
