@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/asaskevich/govalidator"
-	"github.com/nurana88/online-shopping/pkg/domain"
+	"github.com/nurana88/online-shopping/pkg/local"
 )
 
 func init() {
@@ -10,8 +10,8 @@ func init() {
 }
 
 func addCustomValidators() {
-	govalidator.TagMap["domain-country"] = func(s string) bool {
-		_, err := domain.NewCountry(s)
+	govalidator.TagMap["local-country"] = func(s string) bool {
+		_, err := local.NewCountry(s)
 		return err == nil
 	}
 }

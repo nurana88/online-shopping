@@ -12,7 +12,7 @@ func TestNewGetUser(t *testing.T) {
 	var dbActions DBActions
 
 	testReqUser := config.LoginDetails{
-		Email:    "jen@domain.com",
+		Email:    "jen@local.com",
 		Password: "tErw123>",
 	}
 

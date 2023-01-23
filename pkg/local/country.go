@@ -1,5 +1,5 @@
-// Package domain adds new type of Country as a string
-package domain
+// Package local adds new type of Country as a string
+package local
 
 import (
 	"encoding/json"
